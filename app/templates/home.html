@@ -4,24 +4,32 @@
 
     <div class="d-flex justify-content-end" style="margin-bottom: 1%; margin-right: 2rem;">
         <!-- Selector de página -->
-        <nav aria-label="...">
+        <nav aria-label="Pagination">
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link">⬅️</a>
+                <!-- Botón Anterior -->
+                <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ current_page|add:-1 }}">⬅️</a>
                 </li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">1</a>
+    
+                <!-- Páginas 1, 2 y 3 -->
+                <li class="page-item {% if current_page == 1 %}active{% endif %}">
+                    <a class="page-link" href="?page=1">1</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
+                <li class="page-item {% if current_page == 2 %}active{% endif %}">
+                    <a class="page-link" href="?page=2">2</a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">➡️</a>
+                <li class="page-item {% if current_page == 3 %}active{% endif %}">
+                    <a class="page-link" href="?page=3">3</a>
+                </li>
+    
+                <!-- Botón Siguiente -->
+                <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ current_page|add:1 }}">➡️</a>
                 </li>
             </ul>
         </nav>
     </div>
+    
 
     <div class="d-flex justify-content-center" style="margin-bottom: 1%">
         <!-- Buscador del sitio -->
@@ -35,8 +43,9 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% if images|length == 0 %}
         <h2 class="text-center">La búsqueda no arrojó resultados...</h2>
+        <!--en esta sección se le da borde a los personajes segun su estado -->
         {% else %} {% for img in images %}
-        <div class="col">   <!--en esta sección se le da borde a los personajes segun su estado -->
+        <div class="col">   
             <div class="card mb-3 ms-5" style="max-width: 540px; 
                 {% if img.status == 'Alive' %} border: 2.5px solid green; 
                 {% elif img.status == 'Dead' %} border: 2.5px solid red; 
@@ -47,13 +56,12 @@
                     <div class="col-md-4">
                         <img src="{{ img.url }}" class="card-img-top" alt="imagen">
                     </div>
-
                     <div class="col-md-8">
                         <div class="card-body">
                             <h3 class="card-title">{{ img.name }}</h3>
                             <p class="card-text">
-                                <strong>
-                                            {% if img.status == 'Alive' %} 🟢 {{ img.status }} !--*en este if se le da color al ciruclo de estado*/ -->
+                                <strong>    <!--*en este if se le da color al ciruclo de estado*/ -->
+                                            {% if img.status == 'Alive' %} 🟢 {{ img.status }} 
                                             {% elif img.status == 'Dead' %} 🔴 {{ img.status }} 
                                             {% else %} 🟠 {{ img.status }} 
                                             {% endif %}
